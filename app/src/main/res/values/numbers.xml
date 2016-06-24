@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="duration_anim">50</integer>
+    <integer name="duration_alpha">80</integer>
+    <integer name="duration_alpha_viewpager">500</integer>
+</resources>

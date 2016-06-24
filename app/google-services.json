@@ -1,0 +1,166 @@
+{
+  "project_info": {
+    "project_number": "501652046819",
+    "firebase_url": "https://wallpapers-31821.firebaseio.com",
+    "project_id": "wallpapers-31821",
+    "storage_bucket": "wallpapers-31821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:5036f64ea6992964",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.iron_man_wallpaper_tbr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:3174fa41d73fd37e",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.cittens_wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:1f2ba03136ad387e",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.kittens_wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:2f2d15a76d87d855",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.pretty_puppies_wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:00c470531a436198",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.pretty_owls_wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

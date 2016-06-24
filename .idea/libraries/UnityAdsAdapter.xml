@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="UnityAdsAdapter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/UnityAdsAdapter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

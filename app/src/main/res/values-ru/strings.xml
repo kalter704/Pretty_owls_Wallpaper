@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Милые совы Обои</string>
+
+    <string name="set_wallpaper">Установить</string>
+    <string name="successful_set_wallpaper">Обои успешно установлены!</string>
+    <string name="watch">Смотреть</string>
+    <string name="text_for_watch_video">Чтобы получить картинку посмотрите видео</string>
+    <string name="text_network_error">Для просмотра видео необходимо включить интернет</string>
+</resources>
