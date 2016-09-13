@@ -9,7 +9,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.aleksandr.nikitin.kittens_wallpaper.MainActivity">
+    tools:context="com.aleksandr.nikitin.pretty_owls_wallpaper">
+
 
 
     <android.support.v4.view.ViewPager
@@ -18,12 +19,25 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/setWlpBtn"></android.support.v4.view.ViewPager>
 
+
+    <Button
+        android:id="@+id/btnMenu"
+        style="@style/btn_style2"
+        android:layout_gravity="top|left"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        style="@style/btn_style2"
+        android:layout_gravity="top|left"
+        android:src="@drawable/ic_menu"/>
+
     <Button
         android:id="@+id/btnSetWallpaper"
         style="@style/btn_style"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="70dp"
         android:text="@string/set_wallpaper" />
+
 
     <!--
     <Button
@@ -114,21 +128,21 @@
     -->
 
     <ProgressBar
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="70dp" />
 
     <ProgressBar
+        android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar2"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="15dp" />
 
 
 </FrameLayout>
