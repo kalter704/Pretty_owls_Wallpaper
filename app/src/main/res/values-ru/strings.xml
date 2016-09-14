@@ -10,7 +10,7 @@
 
     <string name="drawer_item_wallpaper">Обои</string>
     <string name="drawer_item_our_applications">Наши приложения</string>
-    <string name="drawer_item_pretty_puppies">Милые котята</string>
-    <string name="drawer_item_pretty_kittens">Милые щенята</string>
+    <string name="drawer_item_pretty_kittens">Милые котята</string>
+    <string name="drawer_item_pretty_puppies">Милые щенята</string>
     <string name="drawer_item_like">Мне нравится</string>
 </resources>

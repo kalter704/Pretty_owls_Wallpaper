@@ -101,21 +101,6 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withHeaderBackground(R.drawable.header)
-                .addProfiles(
-                        new ProfileDrawerItem().withIcon(getResources().getDrawable(R.mipmap.ic_launcher))
-                )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
-                    }
-                })
-                .build();
-        */
 
         View header = this.getLayoutInflater().inflate(R.layout.drawer_header, null, false);
 

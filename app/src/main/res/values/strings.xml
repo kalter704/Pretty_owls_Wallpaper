@@ -15,8 +15,8 @@
 
     <string name="drawer_item_wallpaper">Wallpaper</string>
     <string name="drawer_item_our_applications">Our applications</string>
-    <string name="drawer_item_pretty_puppies">Pretty puppies</string>
     <string name="drawer_item_pretty_kittens">Pretty kittens</string>
+    <string name="drawer_item_pretty_puppies">Pretty puppies</string>
     <string name="drawer_item_like">Like</string>
 
 
