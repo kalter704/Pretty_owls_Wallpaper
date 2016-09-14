@@ -36,6 +36,18 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -55,6 +67,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
     private RewardedVideoAd mRewardedVideoAd;
 
     private Button btnSetWallPaper;
+    private Button btnOpenMenu;
     private ImageButton btnExit;
 
     private ViewPager pager;
@@ -73,10 +86,61 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
 
     private PremiumWallpaper premiumWallpaper;
 
+    private Drawer drawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withIcon(getResources().getDrawable(R.mipmap.ic_launcher))
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+        */
+
+        View header = this.getLayoutInflater().inflate(R.layout.drawer_header, null, false);
+
+        Picasso.with(header.getContext())
+                .load(R.mipmap.ic_launcher)
+                .transform(new CircularTransformation())
+                .into((ImageView) header.findViewById(R.id.imgHeader));
+
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withActionBarDrawerToggle(true)
+                .withHeader(header)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withBadge("99").withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_free_play).withIcon(FontAwesome.Icon.faw_gamepad),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye).withBadge("6").withIdentifier(2),
+                        new SectionDrawerItem().withName(R.string.drawer_item_settings),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_cog),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
+                        new DividerDrawerItem(),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_github).withBadge("12+").withIdentifier(1)
+                )
+                //.withAccountHeader(headerResult)
+                .build();
+
+        btnOpenMenu = (Button) findViewById(R.id.btnMenu);
+        btnOpenMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer();
+            }
+        });
+
 
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);
         currentPage = sPref.getInt(CURRENT_PAGE, 0);
