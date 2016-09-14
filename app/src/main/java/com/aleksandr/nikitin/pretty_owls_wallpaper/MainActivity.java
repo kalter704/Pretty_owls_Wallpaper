@@ -2,9 +2,11 @@ package com.aleksandr.nikitin.pretty_owls_wallpaper;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +48,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.squareup.picasso.Picasso;
 
@@ -54,6 +57,11 @@ import java.io.IOException;
 public class MainActivity extends FragmentActivity implements PageFragmentWithPremiumWallpaper.onShowVideoAdListener {
 
     private final String CURRENT_PAGE = "current_page";
+
+    private final int DRAWER_ID_WALLPAPER = 1;
+    private final int DRAWER_ID_PRETTY_KITTENS = 2;
+    private final int DRAWER_ID_PRETTY_PUPPIES = 3;
+    private final int DRAWER_ID_PRETTY_OWLS = 4;
 
     private int currentPage;
     private int pictureToBeOpened;
@@ -121,6 +129,13 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                 .withActionBarDrawerToggle(true)
                 .withHeader(header)
                 .addDrawerItems(
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_wallpaper).withIcon(R.drawable.ic_wallpaper).withIdentifier(DRAWER_ID_WALLPAPER),
+                        new SectionDrawerItem().withName(R.string.drawer_item_our_applications),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_pretty_kittens).withIcon(R.drawable.ic_pretty_kittens).withIdentifier(DRAWER_ID_PRETTY_KITTENS),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_pretty_puppies).withIcon(R.drawable.ic_pretty_puppies).withIdentifier(DRAWER_ID_PRETTY_PUPPIES),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_like).withIcon(R.drawable.ic_like).withIdentifier(DRAWER_ID_PRETTY_OWLS)
+/*
                         new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withBadge("99").withIdentifier(1),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_free_play).withIcon(FontAwesome.Icon.faw_gamepad),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye).withBadge("6").withIdentifier(2),
@@ -129,8 +144,30 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                         new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
                         new DividerDrawerItem(),
                         new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_github).withBadge("12+").withIdentifier(1)
+    */
                 )
-                //.withAccountHeader(headerResult)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem != null) {
+                            int id = (int) drawerItem.getIdentifier();
+                            if (id == DRAWER_ID_WALLPAPER) {
+                                return false;
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                if (id == DRAWER_ID_PRETTY_KITTENS) {
+                                    intent.setData(Uri.parse("market://details?id=com.aleksandr.nikitin.kittens_wallpaper"));
+                                } else if (id == DRAWER_ID_PRETTY_PUPPIES) {
+                                    intent.setData(Uri.parse("market://details?id=com.aleksandr.nikitin.pretty_puppies_wallpaper"));
+                                } else if (id == DRAWER_ID_PRETTY_OWLS) {
+                                    intent.setData(Uri.parse("market://details?id=com.aleksandr.nikitin.pretty_owls_wallpaper"));
+                                }
+                                startActivity(intent);
+                            }
+                        }
+                        return false;
+                    }
+                })
                 .build();
 
         btnOpenMenu = (Button) findViewById(R.id.btnMenu);

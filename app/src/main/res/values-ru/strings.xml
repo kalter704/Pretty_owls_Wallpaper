@@ -7,4 +7,10 @@
     <string name="watch">Смотреть</string>
     <string name="text_for_watch_video">Чтобы получить картинку посмотрите видео</string>
     <string name="text_network_error">Для просмотра видео необходимо включить интернет</string>
+
+    <string name="drawer_item_wallpaper">Обои</string>
+    <string name="drawer_item_our_applications">Наши приложения</string>
+    <string name="drawer_item_pretty_puppies">Милые котята</string>
+    <string name="drawer_item_pretty_kittens">Милые щенята</string>
+    <string name="drawer_item_like">Мне нравится</string>
 </resources>
