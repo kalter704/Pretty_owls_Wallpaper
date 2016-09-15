@@ -35,8 +35,8 @@ dependencies {
         transitive = true
     }
 
-    compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
-    compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    //compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
+    //compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 }
