@@ -12,5 +12,8 @@
     <string name="drawer_item_our_applications">Наши приложения</string>
     <string name="drawer_item_pretty_kittens">Милые котята</string>
     <string name="drawer_item_pretty_puppies">Милые щенята</string>
+    <string name="drawer_item_pretty_owls">Милые совы</string>
+    <string name="drawer_item_raccoon_and_fox">Енот и Лиса - Лесные друзья</string>
+    <string name="drawer_item_seal_and_whale">Тюлень и Кит - Морские друзья</string>
     <string name="drawer_item_like">Мне нравится</string>
 </resources>

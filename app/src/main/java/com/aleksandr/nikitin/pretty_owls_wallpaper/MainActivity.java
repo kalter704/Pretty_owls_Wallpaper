@@ -55,6 +55,8 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
     private final int DRAWER_ID_PRETTY_KITTENS = 2;
     private final int DRAWER_ID_PRETTY_PUPPIES = 3;
     private final int DRAWER_ID_PRETTY_OWLS = 4;
+    private final int DRAWER_ID_RACCOON_AND_FOX = 5;
+    private final int DRAWER_ID_SEAL_AND_WHALE = 6;
 
     private int currentPage;
     private int pictureToBeOpened;
@@ -111,6 +113,8 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                         new SectionDrawerItem().withName(R.string.drawer_item_our_applications),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_pretty_kittens).withIcon(R.drawable.ic_pretty_kittens).withIdentifier(DRAWER_ID_PRETTY_KITTENS),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_pretty_puppies).withIcon(R.drawable.ic_pretty_puppies).withIdentifier(DRAWER_ID_PRETTY_PUPPIES),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_raccoon_and_fox).withIcon(R.drawable.ic_raccoon_and_fox).withIdentifier(DRAWER_ID_RACCOON_AND_FOX),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_seal_and_whale).withIcon(R.drawable.ic_seal_and_whale).withIdentifier(DRAWER_ID_SEAL_AND_WHALE),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_like).withIcon(R.drawable.ic_like).withIdentifier(DRAWER_ID_PRETTY_OWLS)
 /*
@@ -134,11 +138,15 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                             } else {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 if (id == DRAWER_ID_PRETTY_KITTENS) {
-                                    intent.setData(Uri.parse("market://details?id=com.aleksandr.nikitin.kittens_wallpaper"));
+                                    intent.setData(Uri.parse(getString(R.string.url_pretty_kittens)));
                                 } else if (id == DRAWER_ID_PRETTY_PUPPIES) {
-                                    intent.setData(Uri.parse("market://details?id=com.aleksandr.nikitin.pretty_puppies_wallpaper"));
+                                    intent.setData(Uri.parse(getString(R.string.url_pretty_puppies)));
                                 } else if (id == DRAWER_ID_PRETTY_OWLS) {
-                                    intent.setData(Uri.parse("market://details?id=com.aleksandr.nikitin.pretty_owls_wallpaper"));
+                                    intent.setData(Uri.parse(getString(R.string.url_pretty_owls)));
+                                } else if (id == DRAWER_ID_RACCOON_AND_FOX) {
+                                    intent.setData(Uri.parse(getString(R.string.url_raccoon_and_fox)));
+                                } else if (id == DRAWER_ID_SEAL_AND_WHALE) {
+                                    intent.setData(Uri.parse(getString(R.string.url_seal_and_whale)));
                                 }
                                 startActivity(intent);
                             }
@@ -654,7 +662,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
 
     }
 
-
+/*
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -670,6 +678,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
             }
         }
     }
+*/
 
     private class setWallpaperAsyncTask extends AsyncTask<Void, Void, Void> {
 

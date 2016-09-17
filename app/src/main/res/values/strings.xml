@@ -17,7 +17,16 @@
     <string name="drawer_item_our_applications">Our applications</string>
     <string name="drawer_item_pretty_kittens">Pretty kittens</string>
     <string name="drawer_item_pretty_puppies">Pretty puppies</string>
+    <string name="drawer_item_pretty_owls">Pretty owls</string>
+    <string name="drawer_item_raccoon_and_fox">Raccoon and Fox - Forest Friends Wallpaper</string>
+    <string name="drawer_item_seal_and_whale">Seal and Whale - Ocean Friends Wallpaper</string>
     <string name="drawer_item_like">Like</string>
+
+    <string name="url_pretty_kittens" translatable="false">market://details?id=com.aleksandr.nikitin.kittens_wallpaper</string>
+    <string name="url_pretty_puppies" translatable="false">market://details?id=com.aleksandr.nikitin.pretty_puppies_wallpaper</string>
+    <string name="url_pretty_owls" translatable="false">market://details?id=com.aleksandr.nikitin.pretty_owls_wallpaper</string>
+    <string name="url_raccoon_and_fox" translatable="false">market://details?id=com.aleksandr.nikitin.raccoon_and_fox_wallpaper</string>
+    <string name="url_seal_and_whale" translatable="false">market://details?id=com.aleksandr.nikitin.seal_and_whale_wallpaper</string>
 
 
 </resources>
