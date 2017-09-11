@@ -8,12 +8,9 @@ import android.graphics.Shader;
 
 import com.squareup.picasso.Transformation;
 
-/**
- * Created by vasiliy on 14.09.16.
- */
 public class CircularTransformation implements Transformation {
 
-    public CircularTransformation() {
+    CircularTransformation() {
     }
 
     @Override

@@ -139,6 +139,76 @@
       },
       "oauth_client": [
         {
+          "client_id": "501652046819-g744sbfdopf2bimci7uvst5193pnndk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aleksandr.nikitin.pretty_owls_wallpaper",
+            "certificate_hash": "a457e3c966a30d1850a767a3d6a1652b5b8782fa"
+          }
+        },
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:4359bfcf02bd881b",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.raccoon_and_fox_wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPrI5yHmFKL7uzzh8bSoM1h9-4D7Rr7yo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501652046819:android:f8af5dbcc894cd84",
+        "android_client_info": {
+          "package_name": "com.aleksandr.nikitin.seal_and_whale_wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "501652046819-nlav6n9m1s2sotjfkjmg091eprn2c8og.apps.googleusercontent.com",
           "client_type": 3
         }

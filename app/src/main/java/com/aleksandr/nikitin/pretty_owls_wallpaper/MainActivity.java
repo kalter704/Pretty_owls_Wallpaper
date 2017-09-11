@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -34,9 +32,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -45,11 +40,18 @@ import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
 
-public class MainActivity extends FragmentActivity implements PageFragmentWithPremiumWallpaper.onShowVideoAdListener {
+public class MainActivity extends FragmentActivity {
+
+    private final String TAG = "main_activity_tag";
 
     private final String CURRENT_PAGE = "current_page";
+
+    private final String CACHE_IMAGE_NAME = "cached_image.jpg";
 
     private final int DRAWER_ID_WALLPAPER = 1;
     private final int DRAWER_ID_PRETTY_KITTENS = 2;
@@ -59,35 +61,21 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
     private final int DRAWER_ID_SEAL_AND_WHALE = 6;
 
     private int currentPage;
-    private int pictureToBeOpened;
 
     private int countOfSwipedPages;
     private int numberOfSwipedPages;
     private boolean isShowFullscreenAds;
-    private boolean isDoNewRequestForInterstitial;
 
     private InterstitialAd mInterstitialAd;
-    private RewardedVideoAd mRewardedVideoAd;
 
     private Button btnSetWallPaper;
-    private Button btnOpenMenu;
-    private ImageButton btnExit;
 
     private ViewPager pager;
-    private PagerAdapter pagerAdapter;
-    //boolean isPagerWithShadow;
 
-    //private LinearLayout linImg;
-    //private ImageView img;
     private ProgressBar progressBar;
     private ProgressBar progressBarShowPosition;
-    //private Animation animRotate;
-    private Animation animAlphaVilible;
-    private Animation animAlphaInvilible;
-    //Animation animFadeIn;
-    //Animation animFadeOut;
-
-    private PremiumWallpaper premiumWallpaper;
+    private Animation animAlphaVisible;
+    private Animation animAlphaInvisible;
 
     private Drawer drawer;
 
@@ -96,6 +84,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Log.d(TAG, "1");
 
         View header = this.getLayoutInflater().inflate(R.layout.drawer_header, null, false);
 
@@ -117,16 +106,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                         new PrimaryDrawerItem().withName(R.string.drawer_item_seal_and_whale).withIcon(R.drawable.ic_seal_and_whale).withIdentifier(DRAWER_ID_SEAL_AND_WHALE),
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_like).withIcon(R.drawable.ic_like).withIdentifier(DRAWER_ID_PRETTY_OWLS)
-/*
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(FontAwesome.Icon.faw_home).withBadge("99").withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_free_play).withIcon(FontAwesome.Icon.faw_gamepad),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_custom).withIcon(FontAwesome.Icon.faw_eye).withBadge("6").withIdentifier(2),
-                        new SectionDrawerItem().withName(R.string.drawer_item_settings),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_help).withIcon(FontAwesome.Icon.faw_cog),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_open_source).withIcon(FontAwesome.Icon.faw_question).withEnabled(false),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_contact).withIcon(FontAwesome.Icon.faw_github).withBadge("12+").withIdentifier(1)
-    */
+
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -156,7 +136,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                 })
                 .build();
 
-        btnOpenMenu = (Button) findViewById(R.id.btnMenu);
+        Button btnOpenMenu = (Button) findViewById(R.id.btnMenu);
         btnOpenMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,32 +144,15 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
             }
         });
 
-
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);
         currentPage = sPref.getInt(CURRENT_PAGE, 0);
 
-        premiumWallpaper = new PremiumWallpaper(this);
-        //premiumWallpaper = new PremiumWallpaper(this, Wallpapers.images.length - 3, Wallpapers.images.length - 2, Wallpapers.images.length - 1);
-        /*
-        premiumWallpaper.add(9);
-        premiumWallpaper.add(17);
-        premiumWallpaper.add(31);
-        premiumWallpaper.add(44);
-        premiumWallpaper.add(53);
-        premiumWallpaper.add(66);
-        */
-
-        //premiumWallpaper.setStateByNumber(Wallpapers.images.length - 3, PremiumWallpaper.CLOSED_PREMIUM_WALLPAPER);
-        //premiumWallpaper.setStateByNumber(Wallpapers.images.length - 2, PremiumWallpaper.CLOSED_PREMIUM_WALLPAPER);
-        //premiumWallpaper.setStateByNumber(Wallpapers.images.length - 1, PremiumWallpaper.CLOSED_PREMIUM_WALLPAPER);
+        //premiumWallpaper = new PremiumWallpaper(this);
 
         countOfSwipedPages = 0;
         numberOfSwipedPages = Wallpapers.images.length - 1;
         isShowFullscreenAds = false;
-        isDoNewRequestForInterstitial = false;
 
-        //linImg = (LinearLayout) findViewById(R.id.linImg);
-        //img = (ImageView) findViewById(R.id.imageView);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -197,21 +160,17 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
         progressBarShowPosition.setMax(Wallpapers.images.length - 1);
         progressBarShowPosition.setProgress(currentPage);
 
-        //animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation_proccess);
-        animAlphaVilible = AnimationUtils.loadAnimation(this, R.anim.alpha_vilible);
-        animAlphaInvilible = AnimationUtils.loadAnimation(this, R.anim.alpha_invilible);
-        //animFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-        //animFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        animAlphaVisible = AnimationUtils.loadAnimation(this, R.anim.alpha_vilible);
+        animAlphaInvisible = AnimationUtils.loadAnimation(this, R.anim.alpha_invilible);
 
-        animAlphaVilible.setAnimationListener(new Animation.AnimationListener() {
+        animAlphaVisible.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //img.startAnimation(animRotate);
+
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                //linImg.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
             }
 
@@ -221,7 +180,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
             }
         });
 
-        animAlphaInvilible.setAnimationListener(new Animation.AnimationListener() {
+        animAlphaInvisible.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -230,8 +189,6 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
             @Override
             public void onAnimationEnd(Animation animation) {
                 progressBar.setVisibility(View.INVISIBLE);
-                //linImg.setVisibility(View.INVISIBLE);
-                //img.clearAnimation();
             }
 
             @Override
@@ -239,197 +196,30 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
 
             }
         });
-
-        /*
-        animFadeIn.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d("QWERTY", "animFadeIn onAnimationEnd");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    pager.setAlpha((float) 1.0);
-                }
-                img.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        animFadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                Log.d("QWERTY", "animFadeOut onAnimationEnd");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    pager.setAlpha((float) 0.3);
-                }
-                img.clearAnimation();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        */
-
-        //img.startAnimation(animation);
-
-        /*
-
-
-        SurfaceView v = (SurfaceView) findViewById(R.id.surfaceView);
-        GifRun w = new GifRun();
-        w.LoadGiff(v, this, R.drawable.proc123);
-*/
-
-/*
-        ((Button) findViewById(R.id.btnFix)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-                DisplayMetrics metrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                int dispayWidth = metrics.widthPixels;
-                int dispayHeight = metrics.heightPixels;
-
-
-                Toast.makeText(getApplicationContext(), String.valueOf(dispayWidth), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), String.valueOf(dispayHeight), Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumWidth()), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumHeight()), Toast.LENGTH_SHORT).show();
-*/
-
-                /*
-                img.startAnimation(animRotate);
-                linImg.setVisibility(View.VISIBLE);
-                */
-/*
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                } else {
-                    requestNewInterstitial();
-                }
-*/
-                /*
-                wallpaperManager.suggestDesiredDimensions(720, 1280);
-
-                Context context = getApplicationContext();
-                int resID = R.drawable.iron_man_1;
-
-                Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                        getResources().getResourcePackageName(resID) + '/' +
-                        getResources().getResourceTypeName(resID) + '/' +
-                        getResources().getResourceEntryName(resID) );
-
-                Intent intent = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    intent = wallpaperManager.getCropAndSetWallpaperIntent(uri);
-                }
-                startActivity(intent);
-                */
-                /*
-                wallpaperManager.setWallpaperOffsetSteps(0, (float) 0.33);
-                wallpaperManager.setWallpaperOffsets(getWindow().getDecorView().getRootView().getWindowToken(), (float) 0.8, (float) 0.8);
-                */
-/*
-            }
-        });
-        */
-
-
-        /*
-        ((Button) findViewById(R.id.btnFluid1)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                additionalWidth = (float) 0.1;
-                //img.clearAnimation();
-                linImg.startAnimation(animAlphaInvilible);
-            }
-        });
-
-        ((Button) findViewById(R.id.btnFluid2)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                additionalWidth = (float) 0.4;
-            }
-        });
-        */
 
         btnSetWallPaper = (Button) findViewById(R.id.btnSetWallpaper);
         btnSetWallPaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new setWallpaperAsyncTask()).execute();
+                new setWallpaperAsyncTask().execute();
             }
         });
-/*
-        btnExit = (ImageButton) findViewById(R.id.btnExitFromMyApp);
-        btnExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-*/
-        //isPagerWithShadow = false;
+
         pager = (ViewPager) findViewById(R.id.viewPager);
-        pagerAdapter = new MyFragmentPageAdapter(getSupportFragmentManager());
+        PagerAdapter pagerAdapter = new MyFragmentPageAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
 
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
-                //Toast.makeText(getApplicationContext(), "i = " + String.valueOf(i) + " v = " + String.valueOf(v) + " i2 = " + String.valueOf(i2), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onPageSelected(int i) {
                 progressBarShowPosition.setProgress(i);
-                //Toast.makeText(getApplicationContext(), "i = " + String.valueOf(i), Toast.LENGTH_SHORT).show();
-                if(premiumWallpaper.equals(i)) {
-                    if(premiumWallpaper.getStateByNumber(i) == PremiumWallpaper.OPENED_PREMIUM_WALLPAPER) {
-                        buttonSetEnabled(btnSetWallPaper, true);
-                        //buttonSetEnabled(pager, true);
-                        //setShadowForPager(false);
-                    } else {
-                        buttonSetEnabled(btnSetWallPaper, false);
-                        //buttonSetEnabled(findViewById(R.id.linearLayoutWithViewPager), false);
-                        //buttonSetEnabled(pager, false);
-                        /*
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                            pager.setAlpha((float) 0.1);
-                            Toast.makeText(getApplicationContext(), "asefasefsef", Toast.LENGTH_SHORT).show();
-                        }
-                        */
+                buttonSetEnabled(btnSetWallPaper, true);
 
-                        //setShadowForPager(true);
-                    }
-                } else {
-                    buttonSetEnabled(btnSetWallPaper, true);
-                    //setShadowForPager(false);
-                    //buttonSetEnabled(pager, true);
-                }
-
-                /*
-                if(i == 2) {
-                    buttonSetEnabled(btnSetWallPaper, false);
-                } else {
-                    buttonSetEnabled(btnSetWallPaper, true);
-                }
-                */
                 if (isShowFullscreenAds) {
                     isShowFullscreenAds = false;
                     countOfSwipedPages = 0;
@@ -445,7 +235,7 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
 
             @Override
             public void onPageScrollStateChanged(int i) {
-                //Toast.makeText(getApplicationContext(), "i = " + String.valueOf(i), Toast.LENGTH_SHORT).show();
+
             }
 
         });
@@ -468,85 +258,22 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
             }
         });
 
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewarded(RewardItem reward) {
-                //Toast.makeText(getApplicationContext(), "onRewarded! currency: " + reward.getType() + "  amount: " + reward.getAmount(), Toast.LENGTH_SHORT).show();
-                premiumWallpaper.setStateByNumber(pictureToBeOpened, PremiumWallpaper.OPENED_PREMIUM_WALLPAPER);
-                PageFragmentWithPremiumWallpaper page = (PageFragmentWithPremiumWallpaper) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + pictureToBeOpened);
-                if (page != null) {
-                    page.openPicture();
-                }
-                buttonSetEnabled(btnSetWallPaper, true);
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-                //Toast.makeText(getApplicationContext(), "onRewardedVideoAdLeftApplication", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-                //Toast.makeText(getApplicationContext(), "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int errorCode) {
-                //Toast.makeText(getApplicationContext(), "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
-                if(errorCode == AdRequest.ERROR_CODE_NETWORK_ERROR) {
-                    NetworkErrorDialog dlg = new NetworkErrorDialog();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        dlg.show(getFragmentManager(), "network_error_dlg");
-                    }
-                }
-                PageFragmentWithPremiumWallpaper page = (PageFragmentWithPremiumWallpaper) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + pictureToBeOpened);
-                if (page != null) {
-                    page.reset();
-                }
-            }
-
-            @Override
-            public void onRewardedVideoAdLoaded() {
-                //Toast.makeText(getApplicationContext(), "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
-                mRewardedVideoAd.show();
-                PageFragmentWithPremiumWallpaper page = (PageFragmentWithPremiumWallpaper) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + pictureToBeOpened);
-                if (page != null) {
-                    page.reset();
-                }
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-                //Toast.makeText(getApplicationContext(), "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-                //Toast.makeText(getApplicationContext(), "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mRewardedVideoAd.resume(this);
         pager.setCurrentItem(currentPage);
-        //UnityAds.changeActivity(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mRewardedVideoAd.pause(this);
         currentPage = pager.getCurrentItem();
         SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor ed =  sPref.edit();
+        SharedPreferences.Editor ed = sPref.edit();
         ed.putInt(CURRENT_PAGE, pager.getCurrentItem());
-        ed.commit();
+        ed.apply();
     }
 
     @Override
@@ -557,15 +284,10 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mRewardedVideoAd.destroy(this);
     }
 
     private void requestNewInterstitial() {
         mInterstitialAd.loadAd(getRequestForAds());
-    }
-
-    private void requestNewRewardedVideoAd() {
-        mRewardedVideoAd.loadAd(getString(R.string.video_ad_unit_id), getRequestForAds());
     }
 
     private AdRequest getRequestForAds() {
@@ -600,44 +322,37 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
                 */
     }
 
-    void setWallpaperToBackground() {
+    private Uri setWallpaperToBackground() {
         WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int dispayWidth = metrics.widthPixels;
-        int dispayHeight = metrics.heightPixels;
+        int displayWidth = metrics.widthPixels;
+        int displayHeight = metrics.heightPixels;
 
-        Log.d("QWERTY", String.valueOf(dispayWidth));
-        Log.d("QWERTY", String.valueOf(dispayHeight));
+        Log.d("QWERTY", String.valueOf(displayWidth));
+        Log.d("QWERTY", String.valueOf(displayHeight));
 
-        wallpaperManager.suggestDesiredDimensions(dispayWidth, wallpaperManager.getDesiredMinimumHeight());
-        wallpaperManager.setWallpaperOffsetSteps(1, 1);
+        try {
+            File file = new File(getFilesDir().toString(), CACHE_IMAGE_NAME);
 
-        if (DisplayInfo.isCorrespondsToTheDensityResolution(dispayWidth, dispayHeight)) {
-            try {
-                wallpaperManager.setResource(Wallpapers.images[pager.getCurrentItem()]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
+            OutputStream outputStream = openFileOutput(CACHE_IMAGE_NAME, Context.MODE_WORLD_READABLE);
+
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Wallpapers.images[pager.getCurrentItem()]);
-            bitmap = Bitmap.createScaledBitmap(bitmap, dispayWidth, wallpaperManager.getDesiredMinimumHeight(), true);
 
-            try {
-                wallpaperManager.setBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (!DisplayInfo.isCorrespondsToTheDensityResolution(displayWidth, displayHeight)) {
+                bitmap = Bitmap.createScaledBitmap(bitmap, displayWidth, wallpaperManager.getDesiredMinimumHeight(), true);
             }
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream);
 
+            outputStream.flush();
+            outputStream.close();
+
+            return Uri.fromFile(file);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onShowVideoAd(int i) {
-        pictureToBeOpened = i;
-        requestNewRewardedVideoAd();
-        //buttonSetEnabled(btnSetWallPaper, true);
+        return null;
     }
 
     private class MyFragmentPageAdapter extends FragmentPagerAdapter {
@@ -645,15 +360,12 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
         private int[] images = Wallpapers.images;
         private int imagesCount = images.length;
 
-        public MyFragmentPageAdapter(FragmentManager fm) {
+        MyFragmentPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
-            if(premiumWallpaper.getStateByNumber(i) == PremiumWallpaper.CLOSED_PREMIUM_WALLPAPER) {
-                return PageFragmentWithPremiumWallpaper.newInstance(images[i], i);
-            }
             return PageFragment.newInstance(images[i]);
         }
 
@@ -682,65 +394,50 @@ public class MainActivity extends FragmentActivity implements PageFragmentWithPr
     }
 */
 
-    private class setWallpaperAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class setWallpaperAsyncTask extends AsyncTask<Void, Void, Uri> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //buttonSetEnabled(btnExit, false);
             buttonSetEnabled(btnSetWallPaper, false);
-            progressBar.startAnimation(animAlphaVilible);
-            //linImg.startAnimation(animAlphaVilible);
+            progressBar.startAnimation(animAlphaVisible);
         }
 
         @Override
-        protected void onPostExecute(Void param) {
+        protected Uri doInBackground(Void... param) {
+            return setWallpaperToBackground();
+        }
+
+        @Override
+        protected void onPostExecute(Uri param) {
             super.onPostExecute(param);
 
-            //buttonSetEnabled(btnExit, true);
-            if(premiumWallpaper.equals(pager.getCurrentItem())) {
-                if(premiumWallpaper.getStateByNumber(pager.getCurrentItem()) == PremiumWallpaper.OPENED_PREMIUM_WALLPAPER) {
-                    buttonSetEnabled(btnSetWallPaper, true);
-                } else {
-                    buttonSetEnabled(btnSetWallPaper, false);
-                }
-            } else {
-                buttonSetEnabled(btnSetWallPaper, true);
-            }
-            progressBar.startAnimation(animAlphaInvilible);
-            //linImg.startAnimation(animAlphaInvilible);
+            Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setDataAndType(param, "image/*");
+            intent.putExtra("mimeType", "image/*");
+            startActivity(intent);
 
-            Context context = getApplicationContext();
-            CharSequence text = getResources().getString(R.string.successful_set_wallpaper);
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-        }
+            buttonSetEnabled(btnSetWallPaper, true);
 
-        @Override
-        protected Void doInBackground(Void... param) {
-            setWallpaperToBackground();
-            return null;
+            progressBar.startAnimation(animAlphaInvisible);
+
+//            Context context = getApplicationContext();
+//            CharSequence text = getResources().getString(R.string.successful_set_wallpaper);
+//            int duration = Toast.LENGTH_SHORT;
+//            Toast toast = Toast.makeText(context, text, duration);
+//            toast.setGravity(Gravity.CENTER, 0, 0);
+//            toast.show();
         }
     }
 
     void buttonSetEnabled(View view, boolean enabled) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (enabled == true) {
-                view.setAlpha((float) 1.0);
-            } else {
-                view.setAlpha((float) 0.4);
-            }
+        if (enabled) {
+            view.setAlpha((float) 1.0);
+        } else {
+            view.setAlpha((float) 0.4);
         }
         view.setEnabled(enabled);
-        /*
-        if(enabled == true) {
-            view.setTextColor(getResources().getColor(R.color.colorWhite));
-        } else {
-            view.setTextColor(getResources().getColor(R.color.colorGrey));
-        }
-        */
     }
 
 }

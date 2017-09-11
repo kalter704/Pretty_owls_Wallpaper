@@ -3,21 +3,20 @@ package com.aleksandr.nikitin.pretty_owls_wallpaper;
 import android.util.DisplayMetrics;
 
 public class DisplayInfo {
-    public static final int WIDTH_MEDIUM = 360;
-    public static final int HEIGHT_MEDIUM = 640;
+    private static final int WIDTH_MEDIUM = 360;
+    private static final int HEIGHT_MEDIUM = 640;
 
-    public static final int WIDTH_HIGH = 540;
-    public static final int HEIGHT_HIGH = 960;
+    private static final int WIDTH_HIGH = 540;
+    private static final int HEIGHT_HIGH = 960;
 
-    public static final int WIDTH_XHIGH = 720;
-    public static final int HEIGHT_XHIGH = 1280;
+    private static final int WIDTH_XHIGH = 720;
+    private static final int HEIGHT_XHIGH = 1280;
 
-    public static final int WIDTH_XXHIGH = 1080;
-    public static final int HEIGHT_XXHIGH = 1920;
+    private static final int WIDTH_XXHIGH = 1080;
+    private static final int HEIGHT_XXHIGH = 1920;
 
     static boolean isCorrespondsToTheDensityResolution(int width, int height) {
-        int tempXdpi = 0;
-        int tempYdpi = 0;
+        int tempXdpi, tempYdpi;
         switch(width) {
             case WIDTH_MEDIUM:
                 tempXdpi = DisplayMetrics.DENSITY_MEDIUM;
@@ -50,20 +49,8 @@ public class DisplayInfo {
             default:
                 tempYdpi = -2;
         }
-        /*
-        if(tempXdpi != -1) {
-            return true;
-        } else if(tempYdpi != -2) {
-            return true;
-        } else {
-            return false;
-        }
-        */
-        if(tempXdpi == tempYdpi) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return tempXdpi == tempYdpi;
     }
 
 }

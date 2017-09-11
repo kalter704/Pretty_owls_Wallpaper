@@ -32,27 +32,10 @@ public class PageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment, null);
+        View view = inflater.inflate(R.layout.fragment, container, false);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.imgView);
         imageView.setImageResource(imageId);
-
-        //Log.d("QWERTY", "qwfawd12341");
-
-        /*
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        */
-
-        /*
-        Picasso.with(getContext())
-                .load(imageId)
-                .resize(
-                        getResources().getDisplayMetrics().widthPixels,
-                        getResources().getDisplayMetrics().heightPixels
-                )
-                .into(imageView);
-                */
 
         return view;
 
